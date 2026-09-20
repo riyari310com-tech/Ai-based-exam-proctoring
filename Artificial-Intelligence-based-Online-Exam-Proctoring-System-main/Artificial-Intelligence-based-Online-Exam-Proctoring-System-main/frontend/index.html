@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Exam Proctor</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+    rel="stylesheet"
+  />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- Header -->
+  <header class="header">
+    <div class="header-title">
+      <span class="dot"></span>
+      <h1>Exam Proctor</h1>
+    </div>
+    <div class="header-subtitle">face verification &middot; runs entirely in this browser tab</div>
+  </header>
+
+  <!-- Main Layout -->
+  <main class="main">
+
+    <!-- Left Column -->
+    <div class="left-col">
+
+      <!-- Camera Card -->
+      <div class="card">
+        <div class="card-header">CAMERA</div>
+        <div class="card-body">
+
+          <div class="camera-wrapper" id="cameraWrapper">
+            <video id="webcam" autoplay playsinline muted></video>
+            <canvas id="snapshot"></canvas>
+            <div class="camera-placeholder" id="cameraPlaceholder">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                <path stroke-linecap="round" stroke-linejoin="round"
+                  d="M15.75 10.5l4.72-4.72a.75.75 0 011.28.53v11.38a.75.75 0 01-1.28.53l-4.72-4.72M4.5 18.75h9a2.25 2.25 0 002.25-2.25v-9a2.25 2.25 0 00-2.25-2.25h-9A2.25 2.25 0 002.25 7.5v9a2.25 2.25 0 002.25 2.25z" />
+              </svg>
+              <span>Waiting for camera&hellip;</span>
+            </div>
+          </div>
+
+          <div class="camera-status" id="cameraStatus">
+            <div class="spinner"></div>
+            <span id="cameraStatusText">Requesting camera access&hellip;</span>
+          </div>
+
+          <div class="input-group">
+            <label for="studentId">Student ID</label>
+            <input type="text" id="studentId" value="student123" placeholder="e.g. student123" />
+          </div>
+
+          <div class="btn-row">
+            <button class="btn btn-primary" id="btnEnroll" disabled>Enroll face</button>
+            <button class="btn btn-success" id="btnStart" disabled>Start proctoring</button>
+            <button class="btn btn-danger" id="btnStop" disabled>Stop proctoring</button>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Violation Log -->
+      <div class="card" style="margin-top: 1.5rem;">
+        <div class="log-header">
+          <span class="log-header-title">VIOLATION LOG</span>
+          <button class="btn btn-outline" id="btnExport" style="flex:0; padding:0.35rem 0.75rem; font-size:0.75rem;">Export CSV</button>
+        </div>
+        <div id="logEmpty" class="log-empty">No violations recorded yet.</div>
+        <div class="log-table-wrapper" id="logTableWrapper" style="display:none;">
+          <table class="log-table">
+            <thead>
+              <tr>
+                <th>Timestamp</th>
+                <th>Type</th>
+                <th>Details</th>
+              </tr>
+            </thead>
+            <tbody id="logBody"></tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Right Column -->
+    <div class="right-col">
+
+      <!-- How To Use -->
+      <div class="card">
+        <div class="card-header">HOW TO USE IT</div>
+        <div class="card-body">
+          <ol class="steps">
+            <li>Allow camera access when the browser asks.</li>
+            <li>Enter a student ID, center your face in frame, and click <strong>Enroll face</strong>.</li>
+            <li>Click <strong>Start proctoring</strong>. The status bar and log below update in real time.</li>
+            <li>Violations (no face, extra face, mismatch) are timestamped in the log and can be exported as CSV.</li>
+          </ol>
+        </div>
+      </div>
+
+      <!-- Session -->
+      <div class="card">
+        <div class="card-header">SESSION</div>
+        <div class="card-body">
+          <div class="session-grid">
+            <div class="session-item">
+              <div class="label">Status</div>
+              <div class="value status-idle" id="sessionStatus">idle</div>
+            </div>
+            <div class="session-item">
+              <div class="label">Checks run</div>
+              <div class="value" id="sessionChecks">0</div>
+            </div>
+            <div class="session-item full-width">
+              <div class="label">Violations</div>
+              <div class="value" id="sessionViolations">0</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </main>
+
+  <footer class="footer">
+    AI-based Online Exam Proctoring System &mdash; Browser Face Verification
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/@vladmandic/face-api@1.7.13/dist/face-api.min.js"></script>
+  <script src="script.js"></script>
+
+</body>
+</html>
